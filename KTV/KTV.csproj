@@ -90,10 +90,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="cahce\" />
-    <Folder Include="Themes\" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="AddFavoritesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
