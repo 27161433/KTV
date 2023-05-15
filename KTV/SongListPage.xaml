@@ -47,7 +47,7 @@
                         <TextBlock Text="{Binding Type}" Visibility="Collapsed"/>
 
                         <StackPanel x:Name="Buttons" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
-                            <Button Content="加到最愛(暫無作用)" Margin="5"/>
+                            <Button Content="加到最愛" Margin="5"/>
                             <Button Content="刪除" Margin="5" Click="Del_Button_Click" IsEnabled="{Binding DelButton_Enabled}"/>
                             <ProgressRing IsActive="{Binding Progress_Ring}" Width="5" Height="5" Margin="5"/>
                         </StackPanel>
