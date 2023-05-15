@@ -1,0 +1,60 @@
+
+<Page
+    x:Class="KTV.SongListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KTV"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <ProgressRing x:Name="Progress" IsActive="False" Width="50" Height="50" Margin="5"  />
+
+        <ListView 
+            x:Name="SongList" 
+            ItemsSource="{x:Bind Song_List}" 
+            SelectionMode="None" 
+            IsItemClickEnabled="False"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border CornerRadius="10" Margin="5" Height="118" Width="118" Grid.Column="0">
+                            <Image Source="{Binding Img}" HorizontalAlignment="Center" VerticalAlignment="Center" UseLayoutRounding="False" Stretch="UniformToFill"/>
+                        </Border>
+
+                        <TextBlock Text="{Binding Title}" FontSize="20" VerticalAlignment="Center" TextWrapping="Wrap"  Margin="5" Grid.Column="1" Foreground="{Binding FontColor}"/>
+                        <TextBlock Text="{Binding Dt}" FontSize="20" VerticalAlignment="Center"  Margin="5" Grid.Column="2" Foreground="{Binding FontColor}"/>
+
+                        <Border CornerRadius="10" Margin="5">
+                            <ProgressBar x:Name="Progress" Minimum="0" Maximum="100" Visibility="{Binding Progress_Visibility}" Value="{Binding Progress}" Width="Auto" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom"/>
+                        </Border>
+
+                        <TextBlock Text="{Binding Id}" Visibility="Collapsed"/>
+
+                        <TextBlock Text="{Binding Type}" Visibility="Collapsed"/>
+
+                        <StackPanel x:Name="Buttons" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal">
+                            <Button Content="加到最愛(暫無作用)" Margin="5"/>
+                            <Button Content="刪除" Margin="5" Click="Del_Button_Click" IsEnabled="{Binding DelButton_Enabled}"/>
+                            <ProgressRing IsActive="{Binding Progress_Ring}" Width="5" Height="5" Margin="5"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+</Page>

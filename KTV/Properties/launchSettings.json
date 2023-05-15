@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "KTV (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "KTV (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
