@@ -25,7 +25,10 @@
     <None Remove="AddFavoritesPage.xaml" />
     <None Remove="FavoritesPage.xaml" />
     <None Remove="FavoritesPageListPage.xaml" />
+    <None Remove="NcmLoginAPI_Page.xaml" />
+    <None Remove="NcmLoginTokenPage.xaml" />
     <None Remove="SearchPage0.xaml" />
+    <None Remove="SettingsPage.xaml" />
     <None Remove="SongListPage.xaml" />
   </ItemGroup>
 
@@ -137,6 +140,15 @@
     <None Update="img\youtube_icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="NcmLoginTokenPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="NcmLoginAPI_Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!-- 

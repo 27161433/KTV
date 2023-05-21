@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
@@ -28,7 +26,7 @@ namespace KTV
 
         }
 
-        string filePath = Path.Combine(Package.Current.InstalledLocation.Path, "favorites.json");
+        readonly string filePath = Path.Combine(Package.Current.InstalledLocation.Path, "favorites.json");
 
 
         private readonly ObservableCollection<FListObj> FavoritesList = new();
