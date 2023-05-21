@@ -1,22 +1,21 @@
-﻿using Microsoft.UI.Xaml.Media.Imaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using System.IO;
 using System.Net.Http;
-using Microsoft.UI.Xaml;
-using WinUIEx;
-using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json;
 
 namespace KTV
 {
+    public class SettingDatas
+    {
+        public string NcmToken { get; set; }
+    }
 
     public class FListObj
     {
@@ -308,9 +307,12 @@ namespace KTV
         public static SearchPage0 yt = new();
         public static SongListPage sl = new();
         public static FavoritesPage fvr = new();
+        public static SettingsPage sp = new();
         public static MainWindow m_window = new ();
         public static AddFavoritesPage afp = new();
         public static FavoritesPageListPage fplp = new();
+        public static NcmLoginAPI_Page nlap = new();
+        public static NcmLoginTokenPage nltp = new();
         public static bool DownloadStart = false;
         public static bool TimerStart = false;
         public static bool CheckClose = false;
@@ -327,6 +329,8 @@ namespace KTV
 
     public static class PlayMusic
     {
+        readonly static string filePath = Path.Combine(Package.Current.InstalledLocation.Path, "settings.json");
+
         public static async void DownloadSong()
         {
             if (SongData.DownloadSongList.Count == 0)
@@ -337,6 +341,18 @@ namespace KTV
 
             SongData.DownloadStart = true;
 
+            if (!File.Exists(filePath))
+            {
+                using StreamWriter sw = File.CreateText(filePath);
+                SettingDatas newDatas = new() { NcmToken = "" };
+                string newJson = JsonConvert.SerializeObject(newDatas);
+                sw.WriteLine(newJson);
+            }
+
+            string json = File.ReadAllText(filePath);
+            SettingDatas person = JsonConvert.DeserializeObject<SettingDatas>(json);
+
+
             SearchData song = SongData.DownloadSongList[0];
             string server = "getyt.exe";
 
@@ -346,7 +362,7 @@ namespace KTV
 
             string commend = $"d -yt \"{song.Id}\"";
 
-            if (server == "getncm.exe") commend = $"d --ncm \"(<>){song.Id}\"";
+            if (server == "getncm.exe") commend = $"d --ncm \"{person.NcmToken}(<>){song.Id}\"";
 
             await DownloadVideo(executablePath, commend, song);
 

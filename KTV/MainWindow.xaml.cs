@@ -1,18 +1,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System;
 using System.Linq;
 using WinUIEx;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Text.Json;
-using System.Diagnostics;
-using Windows.ApplicationModel;
-using System.IO;
-using System.Text;
-using Windows.Win32.Graphics.Gdi;
-using ABI.System;
 using System.Text.RegularExpressions;
 
 namespace KTV
@@ -27,7 +19,6 @@ namespace KTV
         }
 
 
-
         private void EnsureEarlyWindow()
         {
 
@@ -35,12 +26,6 @@ namespace KTV
 
             AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
 
-
-            // Set window buttons background to transparent
-            //AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-            //AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
-            // Set minimum sizes
             Width = 1280;
             Height = 720;
 
@@ -48,8 +33,6 @@ namespace KTV
             MinHeight = 720;
 
             this.CenterOnScreen();
-
-
 
         }
 
@@ -65,7 +48,8 @@ namespace KTV
         {
             if (args.IsSettingsInvoked)
             {
-                //ContentFrame.Navigate(typeof(SettingsPage));
+                p = SongData.sp;
+                SearchDataHide.Begin();
             }
             else
             {
@@ -87,19 +71,19 @@ namespace KTV
             switch (Nvi.Tag)
             {
                 case "NCMSearch":
-                    if (SongData.ncm != null) ContentFrame.Content = SongData.ncm;
+                    ContentFrame.Content = SongData.ncm;
                     break;
 
                 case "YTSearch":
-                    if (SongData.yt != null) ContentFrame.Content = SongData.yt;
+                    ContentFrame.Content = SongData.yt;
                     break;
 
                 case "SongList":
-                    if (SongData.sl != null) ContentFrame.Content = SongData.sl;
+                    ContentFrame.Content = SongData.sl;
                     break;
 
                 case "Favorites":
-                    if (SongData.fvr != null) ContentFrame.Content = SongData.fvr;
+                    ContentFrame.Content = SongData.fvr;
                     break;
             }
         }
@@ -110,19 +94,19 @@ namespace KTV
             switch (item.Name)
             {
                 case "NCMSearch":
-                    if (SongData.ncm != null) ContentFrame.DataContext = SongData.ncm;
+                    ContentFrame.DataContext = SongData.ncm;
                     break;
 
                 case "YTSearch":
-                    if (SongData.yt != null) ContentFrame.Content = SongData.yt;
+                    ContentFrame.Content = SongData.yt;
                     break;
 
                 case "SongList":
-                    if (SongData.sl != null) ContentFrame.Content = SongData.sl;
+                    ContentFrame.Content = SongData.sl;
                     break;
 
                 case "Favorites":
-                    if (SongData.fvr != null) ContentFrame.Content = SongData.fvr;
+                    ContentFrame.Content = SongData.fvr;
                     break;
             }
         }
@@ -206,13 +190,13 @@ namespace KTV
             return result;
         }
 
-        public void Set_MWBorder(Visibility e, bool enabled)
+        public void Set_MWBorder(bool enabled, Page page)
         {
-            BorderFrame.Content = SongData.afp;
+            BorderFrame.Content = page;
             if (enabled)
             {
-                MWBorder.Visibility = e;
-                AddFovGrid.Visibility = e;
+                MWBorder.Visibility = Visibility.Visible;
+                AddFovGrid.Visibility = Visibility.Visible;
                 AddFovGridShow.Begin();
                 MWBorderShow.Begin();
             }

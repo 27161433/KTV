@@ -1,21 +1,14 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Xml.Linq;
 
 namespace KTV
 {
@@ -26,10 +19,24 @@ namespace KTV
             InitializeComponent();
         }
 
+        readonly string filePath = Path.Combine(Package.Current.InstalledLocation.Path, "settings.json");
+
+
         private readonly ObservableCollection<ListObj> NCMList = new();
 
         public async void UpdateList(string input, string server)
         {
+            if (!File.Exists(filePath))
+            {
+                using StreamWriter sw = File.CreateText(filePath);
+                SettingDatas newDatas = new() { NcmToken = "" };
+                string newJson = JsonConvert.SerializeObject(newDatas);
+                sw.WriteLine(newJson);
+            }
+
+            string json = File.ReadAllText(filePath);
+            SettingDatas person = JsonConvert.DeserializeObject<SettingDatas>(json);
+
             Progress.IsActive = true;
 
             NCMList.Clear();
@@ -38,7 +45,7 @@ namespace KTV
 
             string commend = $"s -yt \"{input}\"";
 
-            if (server == "getncm.exe") commend = $"s --ncm \"(<>){input}\"";
+            if (server == "getncm.exe") commend = $"s --ncm \"{person.NcmToken}(<>){input}\"";
 
             SearchData[] datas = await GetData(executablePath, commend);
 
@@ -187,7 +194,7 @@ namespace KTV
                     Type = newItem.Type,
                 };
 
-                SongData.m_window.Set_MWBorder(Visibility.Visible, true);
+                SongData.m_window.Set_MWBorder(true, SongData.afp);
 
             }
 

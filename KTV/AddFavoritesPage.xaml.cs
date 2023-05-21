@@ -89,14 +89,14 @@ namespace KTV
                 string newJson = JsonConvert.SerializeObject(person);
 
                 File.WriteAllText(filePath, newJson);
-                SongData.m_window.Set_MWBorder(Visibility.Collapsed, false);
+                SongData.m_window.Set_MWBorder(false, SongData.afp);
                 SongData.fvr.UpdateList();
             }
         }
 
         private void Close_Button_Click(object sender, RoutedEventArgs e)
         {
-            SongData.m_window.Set_MWBorder(Visibility.Collapsed, false);
+            SongData.m_window.Set_MWBorder(false, SongData.afp);
         }
 
         private async void AddFrvButton_Click(object sender, RoutedEventArgs e)
@@ -146,7 +146,7 @@ namespace KTV
             File.WriteAllText(filePath, newJson);
 
             AddNewFovGridHide.Begin();
-            SongData.m_window.Set_MWBorder(Visibility.Collapsed, false);
+            SongData.m_window.Set_MWBorder(false, SongData.afp);
             SongData.fvr.UpdateList();
         }
 
