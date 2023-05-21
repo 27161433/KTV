@@ -118,6 +118,12 @@ namespace KTV
                 {
                     item.Progress = data.ProgressValue;
                 }
+                else
+                {
+                    item.Progress_Visibility = "Collapsed";
+                    item.Progress_Ring = false;
+                    progresstimer.Stop();
+                }
 
                 if (File.Exists(musicPath) && (item.Type == 0 || File.Exists(videoPath)))
                 {
@@ -190,6 +196,32 @@ namespace KTV
                         break;
                 }
 
+            }
+
+        }
+
+        private void Favorite_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            ListObj song = (ListObj)button.DataContext;
+
+            ListObj newItem = Song_List.FirstOrDefault(item => item.Id == song.Id);
+
+            if (newItem != null)
+            {
+                SongData.afp.UpdateList();
+                SongData.afp.FovCache = new SearchData
+                {
+                    Id = newItem.Id,
+                    Artis = newItem.Artis,
+                    Title = newItem.True_Title,
+                    Img = newItem.Img,
+                    Dt = newItem.Dtr,
+                    Lrc = newItem.Lrc,
+                    Type = newItem.Type,
+                };
+
+                SongData.m_window.Set_MWBorder(Visibility.Visible, true);
             }
 
         }

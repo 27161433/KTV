@@ -104,44 +104,6 @@ namespace KTV
             return obj;
         }
 
-        private async void SongList_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            ListObj item = e.ClickedItem as ListObj;
-
-            if (item != null)
-            {
-                int index = NCMList.IndexOf(item);
-
-                ContentDialog dialog = new ContentDialog
-                {
-                    Title = "提示",
-                    Content = "請選擇一個操作",
-                    PrimaryButtonText = "點歌",
-                    SecondaryButtonText = "插歌",
-                    CloseButtonText = "取消"
-                };
-
-                dialog.XamlRoot = Content.XamlRoot;
-                ContentDialogResult result = await dialog.ShowAsync();
-                switch (result)
-                {
-                    case ContentDialogResult.Primary:
-
-                        break;
-                    case ContentDialogResult.Secondary:
-
-
-                        break;
-                    case ContentDialogResult.None:
-
-
-                        break;
-                }
-            }
-        }
-
-        private readonly List<Opt> opts = new();
-
         private void Shift_Play_Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;

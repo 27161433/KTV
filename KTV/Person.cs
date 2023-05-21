@@ -37,6 +37,7 @@ namespace KTV
     {
         public string Lrc { get; set; }
         public string Tlyric { get; set; }
+        public string Status { get; set; }
     }
 
     public class SearchData
@@ -50,6 +51,7 @@ namespace KTV
         public string Lrc { get; set; } = "null";
         public int ProgressValue { get; set; }
         public int Count { get; set; }
+        public string Status { get; set; } = "ok";
     }
 
     public class ListObj : INotifyPropertyChanged
@@ -363,7 +365,7 @@ namespace KTV
 
             StringBuilder sb = new();
 
-            process.OutputDataReceived += async (sender, e) =>
+            process.OutputDataReceived += (sender, e) =>
             {
                 if (!string.IsNullOrEmpty(e.Data))
                 {
@@ -379,6 +381,7 @@ namespace KTV
 
                             LrcData datas = JsonConvert.DeserializeObject<LrcData>(e.Data.ToString());
                             song.Lrc = datas.Lrc;
+                            if (datas.Status == "err") song.Status = datas.Status;
                             _ = Create_Player();
                             return;
                         }
@@ -466,7 +469,6 @@ namespace KTV
                         {
                             SongData.Standby = true;
                             SongData.SongFinish = true;
-
                             return;
                         }
                         SongData.SongCount++;
@@ -500,15 +502,18 @@ namespace KTV
 
             if (!File.Exists(musicPath) || (SongData.SongList[SongData.SongCount].Type != 0 && !File.Exists(videoPath)))
             {
-                SongData.SongCount--;
-                SongData.Standby = true;
-                return;
+                if (SongData.SongList[SongData.SongCount].Status != "err")
+                {
+                    if (SongData.SongCount != 0) SongData.SongCount--;
+                    SongData.Standby = true;
+                    return;
+                }
             }
 
             List<SearchData> item = SongData.SongList;
             int count = SongData.SongCount;
             string path = item[count].Type == 1 ? "yt" : "ncm";
-            string json = $"{{\"id\":\"{item[count].Id}\",\"title\":\"{item[count].Title}\",\"img\":\"./cache/{path}/{item[count].Id}.jpg\",\"dt\":{item[count].Dt},\"artis\":\"{item[count].Artis}\",\"lrc\":\"{item[count].Lrc}\",\"type\":{item[count].Type}}}";
+            string json = $"{{\"id\":\"{item[count].Id}\",\"title\":\"{item[count].Title}\",\"img\":\"./cache/{path}/{item[count].Id}.jpg\",\"dt\":{item[count].Dt},\"artis\":\"{item[count].Artis}\",\"lrc\":\"{item[count].Lrc}\",\"type\":{item[count].Type},\"status\":\"{item[count].Status}\"}}";
             StringContent content = new(json, Encoding.UTF8, "application/json");
             string url = "http://localhost:8000/";
             using HttpClient client = new();
